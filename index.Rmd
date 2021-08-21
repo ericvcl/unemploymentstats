@@ -1,0 +1,113 @@
+---
+title: "Midpoint Deliverable"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+df <- read.csv("./data/Unemployment.csv", stringsAsFactors = F)
+source("./scripts/summaryinfo.R")
+source("./scripts/table.R")
+source("./scripts/chart1.R")
+source("./scripts/piechart.R")
+source("./scripts/chart3.R")
+```
+
+## Introduction
+
+Our group is interested in unemployment rates in the United States in the last
+decade and the effects that household income and state population have on this. 
+Additionally, we are curious to see the role that geographical location plays. 
+In this report we will be focusing on a [dataset](https://www.ers.usda.gov/webdocs/DataFiles/48747/Unemployment.csv?v=4199.9) 
+that provides statistics on rates of unemployment and the size of the 
+civilian labor force in the United States from 2000 - 2019.
+
+
+## Summary
+
+```{r summaryinfo, echo FALSE, include=FALSE}
+summary_info <- info_summary(df)
+```
+In order to provide a brief summary of the dataset a handful of averages over
+the years 2000 - 2019 were calculated. The average unemployment rate in 
+the United States over this time period was **`r summary_info[1]`**. The 
+average civilian labor force was **`r summary_info[2]`**. The average numbers of
+employed and unemployed individuals during these years were 
+**`r summary_info[3]`** and **`r summary_info[4]`**, respectively. 
+Additionally, in the most recent year **`r summary_info[5]`** 
+had the highest rate of unemployment, and **`r summary_info[6]`** had the
+lowest. This information was provided to give insight on which states
+performed the best and the worst in terms of unemployment rates in the most
+recent year.
+
+## Table
+```{r table_para, echo=FALSE}
+table_para <- sum_table(df)
+```
+This table provides information on the unemployment rate in the United States
+for the past 5 years (2015-2019). The data was grouped by state to accomplish
+this. The table reveals a few interesting things. Firstly, it shows that from
+2015 to 2019 nearly all states unemployment rates improved. Second, it reveals that
+**`r table_para[50, 1]`** had the highest rates of unemployment of any state 
+during this time period. Lastly, it shows that **`r table_para[43, 1]`**'s 
+unemployment rate in 2019 is less than half of what it was in 2015 
+(**`r table_para[43, 2]`** vs. **`r table_para[43, 6]`**).
+
+```{r table, echo=FALSE}
+library("knitr")
+library(rmarkdown)
+table <- sum_table(df)
+
+kable(table, col.names = c(
+  "State", "Unemployment Rate 2015",
+  "Unemployment Rate 2016",
+  "Unemployment Rate 2017",
+  "Unemployment Rate 2018",
+  "Unemployment Rate 2019"
+))
+```
+
+
+## Chart 1
+
+```{r, echo=FALSE, warning=FALSE}
+chart_1 <- chart_1(df)
+chart_1
+```
+Chart #1 displays the most recent information available regarding states'
+unemployment rates. From this chart, the viewer can understand which states are 
+currently struggling with unemployment. Based on the lengths and positions of 
+the bars compared to the other bars, the viewer can see how much some states are
+plagued by unemployment compared to the others. This will allow viewers to 
+comprehend which states need the most aid and by how significant of a margin.
+This chart reveals that the vast majority of states had unemployment rates 
+under 5% in 2019. Additionally, it shows that every state had unemployment rates
+that were above 2%.
+
+## Chart 2
+```{r, echo=FALSE, warning=FALSE}
+pie_chart_data <- pie_chart(df)
+pie_chart_data
+```
+
+Chart #2 displays the 5 states with the lowest number of unemployed individuals
+in the most recent year (2019). 
+This chart allows the viewer to see both a quantitative and visual 
+representation of the number of unemployed individuals in each state. This 
+makes the difference in the amount of peopled who are unemployed 
+in each state more clear. Additionally, it shows
+that in this small number of states there is a lot of variety in the number
+of unemployed individuals.
+
+
+## Chart 3
+
+```{r, echo=FALSE, warning=FALSE}
+chart_3 <- map(df)
+chart_3
+```
+Chart #3 displays an interactive map of the unemployment rate in each state in the year 2000. The states with the highest unemployment rates are colored in red, and this gradually turns to yellow as the rates gets lower. Hovering over each state reveals its name and exact rate of unemployment. The purpose of the map is to show what unemployment in United States looks like from a geographical perspective. This chart reveals that, in general, states on the west coast
+had higher rates of unemployment than those on the east coast in 2000. Additionally, it shows that Washington state had the highest rate of unemployment in the year 2000.
